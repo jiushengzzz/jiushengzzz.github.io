@@ -1,5 +1,4 @@
 baseURL = 'https://jiushengzzz.github.io/'
 languageCode = 'en-us'
-title = '我的技术博客'
-copyright = 'jiushengzzz'
+title = 'website-jiushengzzz'
 theme = 'stack'
