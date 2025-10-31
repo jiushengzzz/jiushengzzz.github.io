@@ -1,1 +1,1 @@
-blog website by hugo
+blog website by hugo.
