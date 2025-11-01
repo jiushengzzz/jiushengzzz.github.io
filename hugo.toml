@@ -1,4 +1,38 @@
 baseURL = 'https://jiushengzzz.github.io/'
-languageCode = 'en-us'
-title = 'website-jiushengzzz'
+languageCode = 'zh-cn'
+DefaultContentLanguage = 'zh-cn'
+title = 'jiushengzzz'
 theme = 'stack'
+
+[params]
+  favicon = "/favicon.ico"
+  # 侧边栏头像配置
+  [params.sidebar]
+    [params.sidebar.avatar]
+      enabled = true    # 启用头像
+      local = true      # 使用本地图片
+      src = "images/avatar.png"  # 图片路径
+  [params.colorScheme]
+    toggle = false
+
+# 菜单配置
+[menu]
+  [[menu.main]]
+    name = "首页"
+    url = "/"
+    weight = 1
+    
+  [[menu.main]]
+    name = "文章"
+    url = "/post/"
+    weight = 2
+    
+  [[menu.main]]
+    name = "分类"
+    url = "/categories/"
+    weight = 3
+    
+  [[menu.main]]
+    name = "关于"
+    url = "/about/"
+    weight = 4
