@@ -1,1 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>website-jiushengzzz</title><link>https://jiushengzzz.github.io/</link><description>Recent content on website-jiushengzzz</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 31 Oct 2025 16:24:13 +0800</lastBuildDate><atom:link href="https://jiushengzzz.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>My Second Post</title><link>https://jiushengzzz.github.io/post/my-second-post/</link><pubDate>Fri, 31 Oct 2025 16:24:13 +0800</pubDate><guid>https://jiushengzzz.github.io/post/my-second-post/</guid><description>&lt;p&gt;这里是正文，使用 &lt;strong&gt;Markdown&lt;/strong&gt; 语法书写。&lt;/p&gt;</description></item><item><title>My First Post</title><link>https://jiushengzzz.github.io/post/my-first-post/</link><pubDate>Fri, 31 Oct 2025 16:16:48 +0800</pubDate><guid>https://jiushengzzz.github.io/post/my-first-post/</guid><description>&lt;p&gt;这里是正文，使用 &lt;strong&gt;Markdown&lt;/strong&gt; 语法书写。&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>jiushengzzz</title><link>https://jiushengzzz.github.io/</link><description>Recent content on jiushengzzz</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 31 Oct 2025 16:16:48 +0800</lastBuildDate><atom:link href="https://jiushengzzz.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Monorepo策略下的前端项目结构</title><link>https://jiushengzzz.github.io/post/monorepo/</link><pubDate>Fri, 31 Oct 2025 16:16:48 +0800</pubDate><guid>https://jiushengzzz.github.io/post/monorepo/</guid><description>&lt;p&gt;最近正在寻找一套新的前端框架来满足不断扩充的业务，目标是组件库和公共逻辑库能够优雅的穿插在不同的项目中，打包速度要快，在翻阅&lt;a class="link" href="https://github.com/coze-dev/coze-studio" target="_blank" rel="noopener"
+&gt;coze&lt;/a&gt;的源码时发现其项目结构清晰合理，本着对字节前端团队的信任，便研究了一下，其Monorepo+Rsbuild的架构确实能满足我的要求。&lt;/p&gt;
+&lt;h2 id="概念"&gt;概念
+&lt;/h2&gt;&lt;p&gt;Monorepo是一种项目开发与管理的策略模式，它允许&lt;strong&gt;多个工程项目&lt;/strong&gt;集中在一个文件夹中进行&lt;strong&gt;源码层面&lt;/strong&gt;的开发和管理，但是模块之间又是独立的代码仓库。&lt;/p&gt;
+&lt;h2 id="背景"&gt;背景
+&lt;/h2&gt;&lt;p&gt;传统的前端项目中，代码放在一个文件夹中作为一个仓库，随着代码量的增加，公共模块和业务模块会按照文件夹进行拆分，但此时公共模块还是耦合在这个项目中无法被复用，因此后面逐渐把这些公共的组件/逻辑变成一个个模块包，放在公共或者私有的npm仓库，以dist的形式运行在各个项目中，这也是当下最流行的项目结构，但是这样会有几个缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模块包的版本更新比较繁琐，一旦升级了版本，所有项目都需要跟着改&lt;/li&gt;
+&lt;li&gt;调试比较麻烦&lt;/li&gt;
+&lt;li&gt;企业环境下，模块包无法放在公共的npm仓库，需要搭建私有的npm仓库或者软链接的方式进行管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;于是，Monorepo的出现解决了这个问题，既能够集中开发，又能保持各个模块的相对独立。&lt;/p&gt;
+&lt;h2 id="基本使用"&gt;基本使用
+&lt;/h2&gt;&lt;p&gt;在我的项目中，最终使用的是Monorepo+Rsbuild+Turbo的组合架构。其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Monorepo+pnpm负责串联项目结构，天生支持workspace的概念&lt;/li&gt;
+&lt;li&gt;Rsbuild是构建工具，基于Rspack，负责代码的编译、转换、打包、优化等，类似于Webpack或者Vite&lt;/li&gt;
+&lt;li&gt;Turbo是一个构建系统和增量构建工具，自主调度和加速多个项目中的任务（如 build, test, lint），不直接处理代码转换和打包&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="项目结构"&gt;项目结构
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;my-monorepo/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── apps/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── web-app/（一个 React 应用）
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ └── admin-app/（另一个 React 应用）
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── packages/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── ui/（共享组件库）
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ └── core/（共享逻辑库）
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── pnpm-workspace.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;└── turbo.json
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中 pnpm-workspace.yaml 的内容如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;packages&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#e6db74"&gt;&amp;#39;apps/*&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#e6db74"&gt;&amp;#39;packages/*&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用packages字段声明哪些目录下的项目是工作区的子项目。这些目录必须包含package.json文件，并且package.json文件中必须包含name字段，一般为@{根目录名称}/{具体包名}，如：@my-monorepo/ui。&lt;/p&gt;
+&lt;p&gt;有了上述配置后，如果在apps/web-app应用上想引用@my-monorepo/ui，则只需要在apps/web-app的package.json中做如下配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;dependencies&amp;#34;&lt;/span&gt;: {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;@my-monorepo/ui&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;workspace:*&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;即可实现源码引用和调试开发了。&lt;/p&gt;
+&lt;h2 id="关于turbo"&gt;关于Turbo
+&lt;/h2&gt;&lt;p&gt;关于Turbo的用法和配置这里就不多讲了，可以直接参考&lt;a class="link" href="https://turborepo.com/docs" target="_blank" rel="noopener"
+&gt;官方文档&lt;/a&gt;，Turbo能够理解项目中的依赖关系，比如构建apps/web-app时会先构建@my-monorepo/ui，如果没有依赖关系就直接并行构建，功能非常强大，非常适合追求打包速度的开发者。&lt;/p&gt;</description></item></channel></rss>
