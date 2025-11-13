@@ -122,7 +122,7 @@ module.exports = {
 
 #### Host 应用消费模块
 
-```javascript
+```tsx
 // src/App.js (Host应用)
 import React, { useState } from "react";
 
